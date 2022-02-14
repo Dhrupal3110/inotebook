@@ -5,7 +5,7 @@ const Notes = require("../models/Notes");
 const { body, validationResult } = require("express-validator");
 
 //Route:1- get all the otes using:GET "/api/notes/getuser"-  userlogin require
-
+ 
 router.get("/fatchallnotes", fatchuser, async (req, res) => {
   try {
     const notes = await Notes.find({ user: req.user.id });
