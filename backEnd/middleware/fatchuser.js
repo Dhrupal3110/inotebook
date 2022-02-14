@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = "Dhrup@l";
+//  JWT_SECRET=process.env.JWT_SECRET;
+
 
 const fatchuser = (req, res, next) => {
   //get the user the user from jwt token and add the req object

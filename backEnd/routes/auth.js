@@ -5,7 +5,7 @@ const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const fatchuser = require("../middleware/fatchuser");
-
+// const JWT_SECRET=process.env.JWT_SECRET;
 const JWT_SECRET = "Dhrup@l";
 //Route:1-create a User using POSt "/api/auth/createUser"- no userlogin require
 
@@ -52,7 +52,7 @@ router.post(
     }
   }
 );
-//Route:2- create a User using POSt "/api/auth/login"- no userlogin require
+//Route:2- login user using POST "/api/auth/login"- no userlogin require
 router.post(
   "/login",
   [body("email").isEmail(), body("password").isLength({ min: 5 })],
@@ -61,7 +61,11 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+
+
     const { email, password } = req.body;
+
+
     try {
       let user = await User.findOne({ email });
       if (!user) {
@@ -100,7 +104,7 @@ router.post(
     }
 
     try {
-      userId = req.user.id;
+     let userId = req.user.id;
       const user = await User.findById(userId).select("-password");
       res.send(user);
     } catch (error) {
