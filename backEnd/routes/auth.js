@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const fatchuser = require("../middleware/fatchuser");
 // const JWT_SECRET=process.env.JWT_SECRET;
 const JWT_SECRET = "Dhrup@l";
-let success=false;
+
 
 
 //Route:1-create a User using POSt "/api/auth/createUser"- no userlogin require
@@ -20,6 +20,7 @@ router.post(
     body("password").isLength({ min: 5 }),
   ],
   async (req, res) => {
+    let success=false;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({success, errors: errors.array() });
@@ -48,7 +49,8 @@ router.post(
 
       const authToken = jwt.sign(data, JWT_SECRET);
       //  console.log(authToken);
-      res.json(authToken);
+      success=true;
+      res.json({success,authToken});
     } catch (error) {
       console.log(error.message);
       res.status(500).send("Sorry some error occured");
@@ -62,9 +64,10 @@ router.post(
   "/login",
   [body("email").isEmail(), body("password").isLength({ min: 5 })],
   async (req, res) => {
+    let success=false;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({success, errors: errors.array() });
     }
 
 
@@ -76,13 +79,13 @@ router.post(
       if (!user) {
         res
           .status(400)
-          .json({ error: "Please try to login with currect creadnentials" });
+          .json({ success,error: "Please try to login with currect creadnentials" });
       }
       const passwordcompare = await bcrypt.compare(password, user.password); //it returns true false
       if (!passwordcompare) {
         res
           .status(400)
-          .json({ error: "Please try to login with currect creadnentials" });
+          .json({ success,error: "Please try to login with currect creadnentials" });
       }
       const data = {
         user: {
@@ -106,9 +109,10 @@ router.post(
   "/getuser",fatchuser,
 
   async (req, res) => {
+    // let success=false;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ success,errors: errors.array() });
     }
 
     try {
