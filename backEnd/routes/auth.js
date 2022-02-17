@@ -7,6 +7,9 @@ const jwt = require("jsonwebtoken");
 const fatchuser = require("../middleware/fatchuser");
 // const JWT_SECRET=process.env.JWT_SECRET;
 const JWT_SECRET = "Dhrup@l";
+let success=false;
+
+
 //Route:1-create a User using POSt "/api/auth/createUser"- no userlogin require
 
 router.post(
@@ -19,7 +22,7 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({success, errors: errors.array() });
     }
     //Check whether the user with this  exisist alredy
     try {
@@ -27,7 +30,7 @@ router.post(
       if (user) {
         return res
           .status(400)
-          .json({ error: "sorry, user with this email is alredy exist" });
+          .json({ success,error: "sorry, user with this email is alredy exist" });
       }
       const salt = await bcrypt.genSalt(10);
       const secpwd = await bcrypt.hash(req.body.password, salt);
@@ -52,6 +55,8 @@ router.post(
     }
   }
 );
+
+
 //Route:2- login user using POST "/api/auth/login"- no userlogin require
 router.post(
   "/login",
@@ -86,14 +91,17 @@ router.post(
       };
       const authToken = jwt.sign(data, JWT_SECRET);
       //  console.log(authToken);
-      res.json(authToken);
+      success=true;
+      res.json({success,authToken});
     } catch (error) {
       console.log(error.message);
       res.status(500).send("Internal server error occurd");
     }
   }
 );
-//Route:3- create a User using POSt "/api/auth/getuser"-  userlogin require
+
+
+//Route:3- create a User using POST "/api/auth/getuser"-  userlogin require
 router.post(
   "/getuser",fatchuser,
 

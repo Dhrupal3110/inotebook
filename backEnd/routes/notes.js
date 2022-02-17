@@ -22,7 +22,7 @@ router.post(
   fatchuser,
   [
     body("title", "enter velid title ").isLength({ min: 5 }),
-    body("description", "description must atleast 5 charactor").isLength({
+    body("description", "description must atleast 5 charactor").isLength({    
       min: 5,
     }),
   ],
@@ -82,7 +82,7 @@ router.put("/updatenote/:id", fatchuser, async (req, res) => {
     res.status(500).send("some error occurd" + error);
   }
 });
-//Route:4- update note using:DELET "/api/notes/deletnote"-  userlogin require
+//Route:4- Delete note using:DELET "/api/notes/deletnote"-  userlogin require
 router.delete("/deletenote/:id", fatchuser, async (req, res) => {
   try {
     //find the note to be delete to be deleted
