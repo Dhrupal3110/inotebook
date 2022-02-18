@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
-function Login() {
-  let history=useHistory();
+function Login(props) {
+  let history = useHistory();
   const [credentials, setCredentials] = useState({ email: "", password: "" });
 
   const handleSubmit = async (e) => {
@@ -19,11 +19,11 @@ function Login() {
     console.log(json);
     if (json.success) {
       //redirect
-      localStorage.setItem('token',json.authToken);
-      history.push('/')
-      
-    }else{
-      alert("invelid credential")
+      localStorage.setItem("token", json.authToken);
+      props.showAlert("Logged in sucess", "success");
+      history.push("/");
+    } else {
+      props.showAlert("invelid credential", "danger");
     }
   };
   const onChange = (e) => {
@@ -31,7 +31,7 @@ function Login() {
   };
   return (
     <>
-      <form >
+      <form>
         <div className="mb-3">
           <label htmlFor="email" className="form-label">
             Email address
@@ -44,7 +44,6 @@ function Login() {
             aria-describedby="emailHelp"
             onChange={onChange}
             value={credentials.email}
-            
           />
           <div id="emailHelp" className="form-text">
             We'll never share your email with anyone else.
@@ -61,10 +60,14 @@ function Login() {
             name="password"
             onChange={onChange}
             value={credentials.password}
-             />
+          />
         </div>
 
-        <button type="submit" className="btn btn-primary"onClick={handleSubmit}>
+        <button
+          type="submit"
+          className="btn btn-primary"
+          onClick={handleSubmit}
+        >
           Submit
         </button>
       </form>
