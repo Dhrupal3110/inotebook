@@ -110,10 +110,10 @@ router.post(
 
   async (req, res) => {
     // let success=false;
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ success,errors: errors.array() });
-    }
+    // const errors = validationResult(req);s
+    // if (!errors.isEmpty()) {
+    //   return res.status(400).json({ success,errors: errors.array() });
+    // }
 
     try {
      let userId = req.user.id;

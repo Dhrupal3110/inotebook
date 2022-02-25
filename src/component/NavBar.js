@@ -69,7 +69,7 @@ function Navbar() {
           </div>
           :
           <div className="d-flex">
-            <Link className="btn btn-primary mx-1" to="/logOut" onClick={handleLogOut} role="button">
+            <Link className="btn btn-primary mx-1" to="/login" onClick={handleLogOut} role="button">
               LogOut
             </Link>
           </div>}
